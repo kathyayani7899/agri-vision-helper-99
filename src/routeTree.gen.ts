@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SoilRouteImport } from './routes/soil'
 import { Route as DiseaseRouteImport } from './routes/disease'
 import { Route as AdvisorRouteImport } from './routes/advisor'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SoilRoute = SoilRouteImport.update({
+  id: '/soil',
+  path: '/soil',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DiseaseRoute = DiseaseRouteImport.update({
   id: '/disease',
   path: '/disease',
@@ -33,34 +39,45 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/advisor': typeof AdvisorRoute
   '/disease': typeof DiseaseRoute
+  '/soil': typeof SoilRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/advisor': typeof AdvisorRoute
   '/disease': typeof DiseaseRoute
+  '/soil': typeof SoilRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/advisor': typeof AdvisorRoute
   '/disease': typeof DiseaseRoute
+  '/soil': typeof SoilRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/advisor' | '/disease'
+  fullPaths: '/' | '/advisor' | '/disease' | '/soil'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/advisor' | '/disease'
-  id: '__root__' | '/' | '/advisor' | '/disease'
+  to: '/' | '/advisor' | '/disease' | '/soil'
+  id: '__root__' | '/' | '/advisor' | '/disease' | '/soil'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdvisorRoute: typeof AdvisorRoute
   DiseaseRoute: typeof DiseaseRoute
+  SoilRoute: typeof SoilRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/soil': {
+      id: '/soil'
+      path: '/soil'
+      fullPath: '/soil'
+      preLoaderRoute: typeof SoilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/disease': {
       id: '/disease'
       path: '/disease'
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdvisorRoute: AdvisorRoute,
   DiseaseRoute: DiseaseRoute,
+  SoilRoute: SoilRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
