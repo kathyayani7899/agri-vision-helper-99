@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WeatherRouteImport } from './routes/weather'
 import { Route as SoilRouteImport } from './routes/soil'
 import { Route as DiseaseRouteImport } from './routes/disease'
 import { Route as AdvisorRouteImport } from './routes/advisor'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WeatherRoute = WeatherRouteImport.update({
+  id: '/weather',
+  path: '/weather',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SoilRoute = SoilRouteImport.update({
   id: '/soil',
   path: '/soil',
@@ -40,12 +46,14 @@ export interface FileRoutesByFullPath {
   '/advisor': typeof AdvisorRoute
   '/disease': typeof DiseaseRoute
   '/soil': typeof SoilRoute
+  '/weather': typeof WeatherRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/advisor': typeof AdvisorRoute
   '/disease': typeof DiseaseRoute
   '/soil': typeof SoilRoute
+  '/weather': typeof WeatherRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,14 @@ export interface FileRoutesById {
   '/advisor': typeof AdvisorRoute
   '/disease': typeof DiseaseRoute
   '/soil': typeof SoilRoute
+  '/weather': typeof WeatherRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/advisor' | '/disease' | '/soil'
+  fullPaths: '/' | '/advisor' | '/disease' | '/soil' | '/weather'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/advisor' | '/disease' | '/soil'
-  id: '__root__' | '/' | '/advisor' | '/disease' | '/soil'
+  to: '/' | '/advisor' | '/disease' | '/soil' | '/weather'
+  id: '__root__' | '/' | '/advisor' | '/disease' | '/soil' | '/weather'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,10 +76,18 @@ export interface RootRouteChildren {
   AdvisorRoute: typeof AdvisorRoute
   DiseaseRoute: typeof DiseaseRoute
   SoilRoute: typeof SoilRoute
+  WeatherRoute: typeof WeatherRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/weather': {
+      id: '/weather'
+      path: '/weather'
+      fullPath: '/weather'
+      preLoaderRoute: typeof WeatherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/soil': {
       id: '/soil'
       path: '/soil'
@@ -107,6 +124,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdvisorRoute: AdvisorRoute,
   DiseaseRoute: DiseaseRoute,
   SoilRoute: SoilRoute,
+  WeatherRoute: WeatherRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
