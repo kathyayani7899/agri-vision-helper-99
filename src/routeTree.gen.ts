@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WeatherRouteImport } from './routes/weather'
+import { Route as SustainabilityRouteImport } from './routes/sustainability'
 import { Route as SoilRouteImport } from './routes/soil'
 import { Route as DiseaseRouteImport } from './routes/disease'
 import { Route as AdvisorRouteImport } from './routes/advisor'
@@ -18,6 +19,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const WeatherRoute = WeatherRouteImport.update({
   id: '/weather',
   path: '/weather',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SustainabilityRoute = SustainabilityRouteImport.update({
+  id: '/sustainability',
+  path: '/sustainability',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SoilRoute = SoilRouteImport.update({
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/advisor': typeof AdvisorRoute
   '/disease': typeof DiseaseRoute
   '/soil': typeof SoilRoute
+  '/sustainability': typeof SustainabilityRoute
   '/weather': typeof WeatherRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/advisor': typeof AdvisorRoute
   '/disease': typeof DiseaseRoute
   '/soil': typeof SoilRoute
+  '/sustainability': typeof SustainabilityRoute
   '/weather': typeof WeatherRoute
 }
 export interface FileRoutesById {
@@ -61,14 +69,28 @@ export interface FileRoutesById {
   '/advisor': typeof AdvisorRoute
   '/disease': typeof DiseaseRoute
   '/soil': typeof SoilRoute
+  '/sustainability': typeof SustainabilityRoute
   '/weather': typeof WeatherRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/advisor' | '/disease' | '/soil' | '/weather'
+  fullPaths:
+    | '/'
+    | '/advisor'
+    | '/disease'
+    | '/soil'
+    | '/sustainability'
+    | '/weather'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/advisor' | '/disease' | '/soil' | '/weather'
-  id: '__root__' | '/' | '/advisor' | '/disease' | '/soil' | '/weather'
+  to: '/' | '/advisor' | '/disease' | '/soil' | '/sustainability' | '/weather'
+  id:
+    | '__root__'
+    | '/'
+    | '/advisor'
+    | '/disease'
+    | '/soil'
+    | '/sustainability'
+    | '/weather'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +98,7 @@ export interface RootRouteChildren {
   AdvisorRoute: typeof AdvisorRoute
   DiseaseRoute: typeof DiseaseRoute
   SoilRoute: typeof SoilRoute
+  SustainabilityRoute: typeof SustainabilityRoute
   WeatherRoute: typeof WeatherRoute
 }
 
@@ -86,6 +109,13 @@ declare module '@tanstack/react-router' {
       path: '/weather'
       fullPath: '/weather'
       preLoaderRoute: typeof WeatherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sustainability': {
+      id: '/sustainability'
+      path: '/sustainability'
+      fullPath: '/sustainability'
+      preLoaderRoute: typeof SustainabilityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/soil': {
@@ -124,6 +154,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdvisorRoute: AdvisorRoute,
   DiseaseRoute: DiseaseRoute,
   SoilRoute: SoilRoute,
+  SustainabilityRoute: SustainabilityRoute,
   WeatherRoute: WeatherRoute,
 }
 export const routeTree = rootRouteImport
